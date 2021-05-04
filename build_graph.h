@@ -13,6 +13,7 @@ struct data
 {
 	struct position robot;
 	struct position* garbage;
+	int n_garbage;
 };
 
 struct data* load_data(const char* path);
