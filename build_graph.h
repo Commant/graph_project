@@ -11,8 +11,8 @@ struct position
 
 struct data
 {
-	position robot;
-	position* garbage;
+	struct position robot;
+	struct position* garbage;
 };
 
 struct data* load_data(const char* path);
