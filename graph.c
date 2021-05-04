@@ -40,12 +40,12 @@ void graph__fill(struct graph* g, float distance)
 void graph__set_weight(struct graph* g, int i, int j, float distance)
 {
 	g->M[i][j]=distance;
-	g->M[j][i]=distance;
 }
 
 void graph__untie(struct graph* g, int i, int j)
 {
 	graph__set_weight(g,i,j,NO_LINK);
+	graph__set_weight(g,j,i,NO_LINK);
 }
 
 float graph__get_weight(struct graph* g, int i, int j)
