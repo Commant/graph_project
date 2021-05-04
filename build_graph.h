@@ -20,4 +20,6 @@ struct data* load_data(const char* path);
 
 void free_data(struct data* s);
 
+void print_data(struct data* d);
+
 #endif
