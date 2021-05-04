@@ -16,6 +16,11 @@ struct graph* graph__create(int n_vertice)
 	return g;
 }
 
+int graph__get_n_vertices(struct graph* g)
+{
+	return g->n;
+}
+
 void graph__fill_area(struct graph* g, int (*f)(int,int), float distance)
 {
 	for(int i=0;i<g->n;i++)

@@ -36,5 +36,7 @@ void graph__fill_vertice(struct graph* g, int v, float distance);
 
 void graph__print(struct graph* g);
 
+int graph__get_n_vertices(struct graph* g);
+
 
 #endif
