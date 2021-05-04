@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "graph.h"
 #include "build_graph.h"
+#include "path.h"
 
 //sommet: i:j = sommet du point i sachant qu'on vient du point j 
 //poids(i:k --> j:i)=d(i-j)/v + angle(k-i-j)/va
