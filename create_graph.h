@@ -5,6 +5,6 @@
 #include "build_graph.h"
 
 
-struct graph* build_graph(struct data* d);
+struct graph* build_graph(struct data* d, float v, float va);
 
 #endif
