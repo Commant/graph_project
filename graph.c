@@ -101,7 +101,7 @@ void graph__print(struct graph* g)
 {
 	if(g->n>26)
 	{
-		printf("Le graphe est trop grand pour etre affiche\n");
+		printf("(Le graphe est trop grand pour etre affiche)\n");
 		return;
 	}
 	char* black="\033[1;30m";
