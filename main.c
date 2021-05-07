@@ -3,30 +3,36 @@
 #include "graph.h"
 #include "build_graph.h"
 #include "path.h"
+#include "create_graph.h"
 
 //sommet: i:j = sommet du point i sachant qu'on vient du point j 
 //poids(i:k --> j:i)=d(i-j)/v + angle(k-i-j)/va
+float v_rot=2.0;
+float v=1.0;
+
+void fix_args(int argc, char* argv[])
+{
+	if(argc>=2)
+	{
+		v_rot=(float)(atof(argv[1]));
+	}
+}
 
 int main(int argc, char* argv[])
 {
+	fix_args(argc,argv);
 	struct data* d=load_data("./coords.txt");
 	print_data(d);
-	free_data(d);
-
-	struct graph* g=graph__create(15);
-	graph__fill(g,0.0);
-	graph__untie(g,6,5);
-	graph__untie(g,3,11);
-	graph__untie(g,14,13);
-	graph__set_weight(g,8,5,15.0);
-	graph__set_weight(g,1,5,3.0);
-	graph__set_weight(g,2,14,7.0);
-	graph__fill_vertice(g,4,2.0);
-	graph__fill_diagonal(g,0.0);
-
+	struct graph* g=build_graph(d,v,v_rot);
 	graph__print(g);
-	graph__free(g);
+	printf("\n\033[1;32mVitesse de rotation du robot:\033[1;31m %.2f\033[1;0m\n",v_rot);
+	int path[d->n_garbage*(d->n_garbage+1)+1];
+	easy(g,path);
 
+	print_path(path,d->n_garbage,*d);
+
+	graph__free(g);
+	free_data(d);
 	/*
 	int a = garbage_to_vertice(2,0,3);
 	int b = garbage_to_vertice(2,3,3);
@@ -45,5 +51,6 @@ int main(int argc, char* argv[])
 	int e =twice(test2,3);
 	printf("%d-%d\n",d,e);
 	*/
+	
 	return 0;
 }

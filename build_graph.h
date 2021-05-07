@@ -22,4 +22,6 @@ void free_data(struct data* s);
 
 void print_data(struct data* d);
 
+void print_path(int* path,int n,struct data d);
+
 #endif

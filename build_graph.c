@@ -16,7 +16,7 @@ struct data* load_data(const char* path)
 	int ym;
 
 	float xf;
-	float yf;
+	float yf;	
 	//float xfm;
 	//float yfm;
 	struct  position co;
@@ -81,4 +81,15 @@ void free_data(struct data* d)
 {
 	free(d->garbage);
 	free(d);
+}
+
+void print_path(int* path,int n,struct data d)
+{
+	printf("\033[1;36mChemin\033[1;0m:\n");
+	printf("(%.2f,%.2f)->(%.2f,%.2f)\n",d.robot.x,d.robot.y,d.garbage[path[1]/d.n_garbage].x,d.garbage[path[1]/d.n_garbage].y);
+	for(int k=1;k<n-1;k++)
+	{
+		printf("(%.2f,%.2f)->(%.2f,%.2f)\n",d.garbage[path[k]/d.n_garbage].x,d.garbage[path[k]/d.n_garbage].y,d.garbage[path[k+1]/d.n_garbage].x,d.garbage[path[k+1]/d.n_garbage].y);
+	}
+	printf("\033[1;36mFin du chemin\033[1;0m\n");
 }
