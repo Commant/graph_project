@@ -12,11 +12,11 @@ int main(int argc, char* argv[])
 {
 	struct data* d=load_data("./test.txt");
 	print_data(d);
-	free_data(d);
 
-	struct graph* g=build_graph(d,10.0,5.0);
+	struct graph* g=build_graph(d,10.0,1.0);
 
 	graph__print(g);
 	graph__free(g);
+	free_data(d);
 	return 0;
 }
