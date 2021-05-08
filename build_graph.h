@@ -22,6 +22,10 @@ void free_data(struct data* s);
 
 void print_data(struct data* d);
 
-void print_path(int* path,int n,struct data d);
+void print_path(struct graph* g,int* path,int n,struct data d);
+
+int vertice_to_garbage_dest(int vertice,int n_garbage);
+
+int vertice_to_garbage_source(int vertice,int n_garbage);
 
 #endif

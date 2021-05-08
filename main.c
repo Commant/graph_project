@@ -27,9 +27,10 @@ int main(int argc, char* argv[])
 	graph__print(g);
 	printf("\n\033[1;32mVitesse de rotation du robot:\033[1;31m %.2f\033[1;0m\n",v_rot);
 	int path[d->n_garbage*(d->n_garbage+1)+1];
+
 	easy(g,path);
 
-	print_path(path,d->n_garbage,*d);
+	print_path(g,path,d->n_garbage,*d);
 
 	graph__free(g);
 	free_data(d);

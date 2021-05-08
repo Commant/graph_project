@@ -82,14 +82,34 @@ void free_data(struct data* d)
 	free(d->garbage);
 	free(d);
 }
-
-void print_path(int* path,int n,struct data d)
+void print_time(float time)
+{
+	printf("\033[1;35m (%.2f secondes) \033[1;0m",time);
+}
+int vertice_to_garbage_dest(int vertice,int n_garbage)
+{
+	return vertice/(n_garbage+1);
+}
+int vertice_to_garbage_source(int vertice,int n_garbage)
+{
+	return vertice%(n_garbage+1);
+}
+void print_path(struct graph* g,int* path,int n,struct data d)
 {
 	printf("\033[1;36mChemin\033[1;0m:\n");
-	printf("(%.2f,%.2f)->(%.2f,%.2f)\n",d.robot.x,d.robot.y,d.garbage[path[1]/d.n_garbage].x,d.garbage[path[1]/d.n_garbage].y);
-	for(int k=1;k<n-1;k++)
+	float time_total=0.0;
+	float time;
+	printf("\033[1;31m[\033[1;33mR\033[1;31m]\033[1;0m(%.0f,%.0f)->\033[1;31m[\033[1;33m%d\033[1;31m]\033[1;0m(%.0f,%.0f)",d.robot.x,d.robot.y,vertice_to_garbage_source(path[1],d.n_garbage),d.garbage[vertice_to_garbage_source(path[1],d.n_garbage)].x,d.garbage[vertice_to_garbage_source(path[1],d.n_garbage)].y);
+	print_time(time_total);
+	printf("\n");
+	for(int k=1;k<n;k++)
 	{
-		printf("(%.2f,%.2f)->(%.2f,%.2f)\n",d.garbage[path[k]/d.n_garbage].x,d.garbage[path[k]/d.n_garbage].y,d.garbage[path[k+1]/d.n_garbage].x,d.garbage[path[k+1]/d.n_garbage].y);
+		printf("\033[1;31m[\033[1;33m%d\033[1;31m]\033[1;0m(%.0f,%.0f)->\033[1;31m[\033[1;33m%d\033[1;31m]\033[1;0m(%.0f,%.0f)",vertice_to_garbage_dest(path[k-1],d.n_garbage),d.garbage[vertice_to_garbage_dest(path[k-1],d.n_garbage)].x,d.garbage[vertice_to_garbage_dest(path[k-1],d.n_garbage)].y,vertice_to_garbage_dest(path[k],d.n_garbage),d.garbage[vertice_to_garbage_dest(path[k],d.n_garbage)].x,d.garbage[vertice_to_garbage_dest(path[k],d.n_garbage)].y);
+		time=graph__get_weight(g,path[k-1],path[k]);
+		time_total+=time;
+		print_time(time);
+		printf("\n");
 	}
 	printf("\033[1;36mFin du chemin\033[1;0m\n");
+	printf("Le temps total est de \033[1;33m%.2f\033[1;0m secondes\n", time_total);	
 }
