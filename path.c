@@ -89,9 +89,9 @@ void order_to_path(int *order,int *path, int len){
 }
 
 
-void path(struct graph* g, int* path){
+void less_easy(struct graph* g, int* path){
     int n=graph__get_n_vertices(g);
-    int nbr_garbage = floor(sqrt(n - 1));
+    int nbr_garbage = n_garbages_n(n);
     float min = 1000000.0;
     float time;
     int max_incrementation[nbr_garbage+1];

@@ -94,11 +94,15 @@ int vertice_to_garbage_source(int vertice,int n_garbage)
 {
 	return vertice%(n_garbage+1);
 }
+static float square(float x)
+{
+	return x*x;
+}
 void print_path(struct graph* g,int* path,int n,struct data d)
 {
 	printf("\033[1;36mChemin\033[1;0m:\n");
-	float time_total=0.0;
-	float time;
+	float time_total=sqrt(square(d.robot.x-d.garbage[vertice_to_garbage_source(path[1],d.n_garbage)].x)+square(d.robot.y-d.garbage[vertice_to_garbage_source(path[1],d.n_garbage)].y));
+	float time=time_total;
 	printf("\033[1;31m[\033[1;33mR\033[1;31m]\033[1;0m(%.0f,%.0f)->\033[1;31m[\033[1;33m%d\033[1;31m]\033[1;0m(%.0f,%.0f)",d.robot.x,d.robot.y,vertice_to_garbage_source(path[1],d.n_garbage),d.garbage[vertice_to_garbage_source(path[1],d.n_garbage)].x,d.garbage[vertice_to_garbage_source(path[1],d.n_garbage)].y);
 	print_time(time_total);
 	printf("\n");

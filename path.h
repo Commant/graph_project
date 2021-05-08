@@ -17,6 +17,6 @@ int compare(int* t1,int* t2,int len);
 
 void order_to_path(int *order,int *path, int len);
 
-void path(struct graph* g, int* path);
+void less_easy(struct graph* g, int* path);
 
 #endif

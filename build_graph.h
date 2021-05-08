@@ -2,6 +2,7 @@
 #define _BUILD_GRAPH_H_ 
 
 #include "graph.h"
+#include <math.h>
 
 struct position
 {
