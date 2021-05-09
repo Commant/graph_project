@@ -47,7 +47,6 @@ int main(int argc, char* argv[])
 
 	int test[3]={0,2,1};
 	int test2[3]={0,2,2};
-	int d =twice(test,3);
 	int e =twice(test2,3);
 	printf("%d-%d\n",d,e);
 	*/
