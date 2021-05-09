@@ -6,7 +6,10 @@
 
 struct graph
 {
-	int n;//nombre de sommet = 1+(dechets+obstacles*4)^2
+	int n;//nombre de sommet = 1+dechet*(dechet+1) 
+	//1+dechet²+dechet=n <=> dechet² + dechet +(1-n)=0
+	//D=1-4*(1-n)=4*n-3
+	//n=(-1+sqrt(4*n-3))/2 = (sqrt(4*n-3) -1 )/2
 	float** M;//Matrice telle que M[i][j] = distance entre i et j
 	//                                    = NO_LINK s'il y un obstacle entre i et j	
 };

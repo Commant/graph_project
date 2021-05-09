@@ -5,14 +5,23 @@
 #include "path.h"
 #include "create_graph.h"
 
+static int n_garbages_n(int n_vertices_graph)
+{
+	return (int)((sqrt(4*n_vertices_graph-3)-1)/2);
+}
 
 void easy(struct graph* g,int* tab){
-    int nbr_garbage = floor(sqrt(graph__get_n_vertices(g) - 1));
-    tab[0]=0;
-    int count = 1;
-    for (int i = 0; i<nbr_garbage;i++){
-        tab[i+1]=count;
-        count += nbr_garbage;
+    int nbr_garbage = n_garbages_n(g->n);
+    //printf("IL Y A %d DECHETS\n", nbr_garbage);
+    int count = nbr_garbage;
+    tab[0]=count;
+    count = nbr_garbage+1;
+    tab[1]=count;
+    for (int i = 2; i<nbr_garbage;i++){
+    	//printf("COUNT:%d\n",count );
+        count += nbr_garbage+2;
+    	//printf("ARRIVE:%d\n",count );
+        tab[i]=count;
     }
 }
 
@@ -80,9 +89,9 @@ void order_to_path(int *order,int *path, int len){
 }
 
 
-void path(struct graph* g, int* path){
+void less_easy(struct graph* g, int* path){
     int n=graph__get_n_vertices(g);
-    int nbr_garbage = floor(sqrt(n - 1));
+    int nbr_garbage = n_garbages_n(n);
     float min = 1000000.0;
     float time;
     int max_incrementation[nbr_garbage+1];
