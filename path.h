@@ -1,11 +1,14 @@
 #ifndef _DIJKSTRA_H_
 #define _DIJKSTRA_H_
+#include "build_graph.h"
 
-void easy(struct graph* g, int* tab);
+int first_garbage(struct data* d);
+
+void easy(struct graph* g, int* tab,struct data* d);
 
 int garbage_to_vertice(int v,int previous, int nbr_garbage);
 
-float shorter_path(struct graph* g,int* tab, int len);
+float shorter_path(struct graph* g,int* tab, int len,struct data* d);
 
 int twice(int *tab,int len);
 
@@ -17,6 +20,6 @@ int compare(int* t1,int* t2,int len);
 
 void order_to_path(int *order,int *path, int len);
 
-void less_easy(struct graph* g, int* path);
+void less_easy(struct graph* g, int* path,struct data* d);
 
 #endif

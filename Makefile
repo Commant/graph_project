@@ -1,6 +1,5 @@
 COM=gcc
 WR=-Wall
-
 all:code
 
 code:graph.o build_graph.o path.o create_graph.o main.c

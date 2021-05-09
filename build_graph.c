@@ -98,8 +98,18 @@ static float square(float x)
 {
 	return x*x;
 }
+static void print_tab(int T[],int n)
+{
+	for(int k=0;k<n;k++)
+	{
+		printf("%d ",T[k]);
+	}
+	printf("\n");
+}
+
 void print_path(struct graph* g,int* path,int n,struct data d)
 {
+	//print_tab(path,n);
 	printf("\033[1;36mChemin\033[1;0m:\n");
 	float time_total=sqrt(square(d.robot.x-d.garbage[vertice_to_garbage_source(path[1],d.n_garbage)].x)+square(d.robot.y-d.garbage[vertice_to_garbage_source(path[1],d.n_garbage)].y));
 	float time=time_total;
