@@ -26,20 +26,15 @@ void easy(struct graph* g,int* tab){
 }
 
 int garbage_to_vertice(int v,int previous, int nbr_garbage){
-    if (previous<v){
-        return ((v-1)*nbr_garbage+previous+1);
-    }
-    else {
-        return ((v-1)*nbr_garbage+previous);
-    }
+    return v*nbr_garbage+1 + previous;
 }
 
 float shorter_path(struct graph* g,int* tab, int len){
     float sum=0;
     int vertice;
-    int previous_vertice=0;
+    int previous_vertice=garbage_to_vertice(tab[0],g->n,len);
     for (int i=1;i<len;i++){
-        vertice=garbage_to_vertice(tab[i],tab[i-1],len-1);
+        vertice=garbage_to_vertice(tab[i],tab[i-1],len);
         sum += g->M[previous_vertice][vertice];
         previous_vertice = vertice;
     }
@@ -58,8 +53,7 @@ int twice(int *tab,int len){
 }
 
 void fill_max(int* tab,int len){
-    tab[0]=0;
-    for(int k=1;k<len;k++){
+    for(int k=0;k<len;k++){
         tab[len-k-1]=k;
     }
 }
@@ -83,7 +77,7 @@ int compare(int* t1,int* t2,int len){
 void order_to_path(int *order,int *path, int len){
     int vertice;
     for (int i=1;i<len;i++){
-        vertice=garbage_to_vertice(order[i],order[i-1],len-1);
+        vertice=garbage_to_vertice(order[i],order[i-1],len);
         path[i]=vertice;
     }
 }
@@ -94,26 +88,26 @@ void less_easy(struct graph* g, int* path){
     int nbr_garbage = n_garbages_n(n);
     float min = 1000000.0;
     float time;
-    int max_incrementation[nbr_garbage+1];
-    int incrementation[nbr_garbage+1];
-    fill_max(max_incrementation,nbr_garbage+1);
-    fill_incrementation(incrementation,nbr_garbage+1);
+    int max_incrementation[nbr_garbage];
+    int incrementation[nbr_garbage];
+    fill_max(max_incrementation,nbr_garbage);
+    fill_incrementation(incrementation,nbr_garbage);
 
-    while(!compare(max_incrementation,incrementation,nbr_garbage+1)){
-        for (int k=nbr_garbage;k>0;k--){
+    while(!compare(max_incrementation,incrementation,nbr_garbage)){
+        for (int k=nbr_garbage-1;k>=0;k--){
             incrementation[k]+=1;
-            if (incrementation[k]<=nbr_garbage){
-                if (twice(incrementation,nbr_garbage+1)){
-                    time = shorter_path(g,incrementation,nbr_garbage+1);
+            if (incrementation[k]<nbr_garbage){
+                if (twice(incrementation,nbr_garbage)){
+                    time = shorter_path(g,incrementation,nbr_garbage);
                     if (time < min){
                         min = time;
-                        order_to_path(incrementation,path,nbr_garbage+1);
+                        order_to_path(incrementation,path,nbr_garbage);
                     }
                 }
                 break;
             }
             else{
-                incrementation[k]=1;
+                incrementation[k]=0;
             }
         }
     }
