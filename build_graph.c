@@ -100,7 +100,8 @@ static float square(float x)
 }
 void print_path(struct graph* g,int* path,int n,struct data d)
 {
-	printf("\033[1;36mChemin\033[1;0m:\n");
+	//print_tab(path,n);
+	printf("\n\033[1;36m===============Chemin===============\033[1;0m\n\n");
 	float time_total=sqrt(square(d.robot.x-d.garbage[vertice_to_garbage_source(path[1],d.n_garbage)].x)+square(d.robot.y-d.garbage[vertice_to_garbage_source(path[1],d.n_garbage)].y));
 	float time=time_total;
 	printf("\033[1;31m[\033[1;33mR\033[1;31m]\033[1;0m(%.0f,%.0f)->\033[1;31m[\033[1;33m%d\033[1;31m]\033[1;0m(%.0f,%.0f)",d.robot.x,d.robot.y,vertice_to_garbage_source(path[1],d.n_garbage),d.garbage[vertice_to_garbage_source(path[1],d.n_garbage)].x,d.garbage[vertice_to_garbage_source(path[1],d.n_garbage)].y);
@@ -114,6 +115,6 @@ void print_path(struct graph* g,int* path,int n,struct data d)
 		print_time(time);
 		printf("\n");
 	}
-	printf("\033[1;36mFin du chemin\033[1;0m\n");
-	printf("Le temps total est de \033[1;33m%.2f\033[1;0m secondes\n", time_total);	
+	printf("\n\033[1;36m============Fin du chemin============\033[1;0m\n\n");
+	printf("Le temps total est de \033[1;33m%.2f\033[1;0m secondes\n\n", time_total);	
 }

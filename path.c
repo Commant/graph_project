@@ -9,8 +9,33 @@ static int n_garbages_n(int n_vertices_graph)
 {
 	return (int)((sqrt(4*n_vertices_graph-3)-1)/2);
 }
+static float square(float x)
+{
+    return x*x;
+}
+static float distance(float x1,float y1,float x2,float y2)
+{
+    return sqrt(square(x1-x2)+square(y1-y2));
+}
 
-void easy(struct graph* g,int* tab){
+int first_garbage(struct data* d)
+{
+    float dmin=20.0*square(d->garbage[0].x+d->garbage[0].y+d->garbage[1].x+d->garbage[1].y);
+    int id=-1;
+    float dis;
+    for(int k=0;k<d->n_garbage;k++)
+    {
+        dis=distance(d->robot.x,d->robot.y,d->garbage[k].x,d->garbage[k].y);
+        if(dis<dmin)
+        {
+            dmin=dis;
+            id=k;
+        }
+    }
+    return id;
+}
+
+void easy(struct graph* g,int* tab,struct data* d){
     int nbr_garbage = n_garbages_n(g->n);
     //printf("IL Y A %d DECHETS\n", nbr_garbage);
     int count = nbr_garbage;
@@ -26,14 +51,17 @@ void easy(struct graph* g,int* tab){
 }
 
 int garbage_to_vertice(int v,int previous, int nbr_garbage){
-    return v*nbr_garbage+1 + previous;
+    return v*(nbr_garbage+1) + previous;
 }
 
-float shorter_path(struct graph* g,int* tab, int len){
-    float sum=0;
+float shorter_path(struct graph* g,int* tab, int len,struct data* d){
+    //int fg=first_garbage(d);
+    //printf("first garbage:%d\n",fg);
+    float sum=distance(d->robot.x,d->robot.y,d->garbage[tab[0]].x,d->garbage[tab[0]].y);
     int vertice;
-    int previous_vertice=n_garbages_n(g->n);
-    for (int i=0;i<len;i++){
+    int previous_vertice=garbage_to_vertice(tab[0],len,len);
+    //printf("%d:%.2f | ", previous_vertice,sum);
+    for (int i=1;i<len;i++){
         vertice=garbage_to_vertice(tab[i],tab[i-1],len);
         sum += g->M[previous_vertice][vertice];
         previous_vertice = vertice;
@@ -76,14 +104,14 @@ int compare(int* t1,int* t2,int len){
 
 void order_to_path(int *order,int *path, int len){
     int vertice;
+    path[0]=garbage_to_vertice(order[0],len,len);
     for (int i=1;i<len;i++){
         vertice=garbage_to_vertice(order[i],order[i-1],len);
         path[i]=vertice;
     }
 }
 
-
-void less_easy(struct graph* g, int* path){
+void less_easy(struct graph* g, int* path,struct data* d){
     int n=graph__get_n_vertices(g);
     int nbr_garbage = n_garbages_n(n);
     float min = 1000000.0;
@@ -98,7 +126,7 @@ void less_easy(struct graph* g, int* path){
             incrementation[k]+=1;
             if (incrementation[k]<nbr_garbage){
                 if (twice(incrementation,nbr_garbage)){
-                    time = shorter_path(g,incrementation,nbr_garbage);
+                    time = shorter_path(g,incrementation,nbr_garbage,d);
                     if (time < min){
                         min = time;
                         order_to_path(incrementation,path,nbr_garbage);
@@ -111,22 +139,31 @@ void less_easy(struct graph* g, int* path){
             }
         }
     }
+    //printf("PREMIER SOMMET:%d\n",path[0] );
 }
-/*
-int min_cost(struct graph*g,int *saw,int len,int nbr_garbage, int position){
-    int min = 1000000;
+
+int in_tab(int number,int* tab,int len){
+    for (int i=0;i<len;i++){
+        if (number==tab[i]){
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int min_cost(struct graph*g,int *saw,int len,int nbr_garbage, int position, struct data* d){
+    float min = 1000000;
     int min_position;
-    int distance;
-    int garbage_position = floor(position/(nbr_garbage+1);
+    int vertice;
+    int garbage_position = floor(position/(nbr_garbage+1));
+    float time;
     if (position==g->n){
         for (int i=0;i<nbr_garbage;i++){
-            vertice = garbage_to_vertice(i,garbage_position,nbr_garbage)
-            time = g->M[position][vertice];
+            time=distance(d->robot.x,d->robot.y,d->garbage[i].x,d->garbage[i].y);
             if (time<min){
-                min_position = i;
+                min_position = garbage_to_vertice(i,nbr_garbage,nbr_garbage);
             }
         }
-
     }
     else{
         for (int i=0;i<nbr_garbage;i++){
@@ -137,23 +174,21 @@ int min_cost(struct graph*g,int *saw,int len,int nbr_garbage, int position){
                     min_position = vertice;
                 }
             }
+        }
     }
     return min_position;
 }
 
-void possible_way(struct graph* g, int* path){
+void possible_way(struct graph* g, int* path,struct data* d){
     int n=graph__get_n_vertices(g);
     int nbr_garbage = n_garbages_n(n);
-    int order[nbr_garbage];
     int saw[nbr_garbage];
-    int count==0;
     int min;
+    int previous=n;
     for (int i=0;i<nbr_garbage;i++){
-        min=0
-        for(int j=0;j<nbr_garbage;j++){
-            if 
-
-        }
+        min = min_cost(g,&saw[0],i,nbr_garbage,previous,d);
+        path[i]=min;
+        saw[i]=min/(nbr_garbage+1);
+        previous = min;
     }
 }
-*/

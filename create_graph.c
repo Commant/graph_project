@@ -41,7 +41,10 @@ struct graph* build_graph(struct data* d, float v, float va)
               {
                   distance1 = sqrt(square(d->robot.x-d->garbage[b1].x)+square(d->robot.y-d->garbage[b1].y));
                   distance2 = sqrt(square(d->garbage[a2].x-d->garbage[b2].x)+square(d->garbage[a2].y-d->garbage[b2].y));
-                  angle = acosf(absf(((d->garbage[b1].x-d->robot.x)*(d->garbage[b2].x-d->garbage[a2].x)+(d->garbage[b1].y-d->robot.y)*(d->garbage[b2].y-d->garbage[a2].y))/(distance1*distance2)));
+                  if(distance2==0 || distance1==0)
+                    angle=0.0;
+                  else
+                    angle = acosf(absf(((d->garbage[b1].x-d->robot.x)*(d->garbage[b2].x-d->garbage[a2].x)+(d->garbage[b1].y-d->robot.y)*(d->garbage[b2].y-d->garbage[a2].y))/(distance1*distance2)));
                   //printf("d1:%.2f; d2:%.2f;angle:%.2f\n", angle);
                   graph->M[i][j]=distance2/v + angle/va;
               }
@@ -52,7 +55,10 @@ struct graph* build_graph(struct data* d, float v, float va)
                   {
                     distance1 = sqrt(square(d->garbage[a1].x-d->garbage[b1].x)+square(d->garbage[a1].y-d->garbage[b1].y));
                     distance2 = sqrt(square(d->garbage[a2].x-d->garbage[b2].x)+square(d->garbage[a2].y-d->garbage[b2].y));
-                    angle = acosf(absf(((d->garbage[b1].x-d->garbage[a1].x)*(d->garbage[b2].x-d->garbage[a2].x)+(d->garbage[b1].y-d->garbage[a1].y)*(d->garbage[b2].y-d->garbage[a2].y))/(distance1*distance2)));
+                    if(distance2==0 || distance1==0)
+                      angle=0.0;
+                    else
+                      angle = acosf(absf(((d->garbage[b1].x-d->garbage[a1].x)*(d->garbage[b2].x-d->garbage[a2].x)+(d->garbage[b1].y-d->garbage[a1].y)*(d->garbage[b2].y-d->garbage[a2].y))/(distance1*distance2)));
                     //printf("(%d->%d):%.2f\n",a1,b1,d->garbage[a1].x,d->garbage[b1].x);
                     //printf("distance:%.2f et %.2f et %.2f\n",distance1,distance2,angle );
                     //printf("angle:%.2f\n", angle);
