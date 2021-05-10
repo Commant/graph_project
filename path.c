@@ -142,16 +142,9 @@ void less_easy(struct graph* g, int* path,struct data* d){
     //printf("PREMIER SOMMET:%d\n",path[0] );
 }
 
-int in_tab(int number,int* tab,int len){
-    for (int i=0;i<len;i++){
-        if (number==tab[i]){
-            return 1;
-        }
-    }
-    return 0;
-}
 
-int min_cost(struct graph*g,int *saw,int len,int nbr_garbage, int position, struct data* d){
+
+int min_cost(struct graph*g,int *unvisited,int len,int nbr_garbage, int position, struct data* d){
     float min = 1000000;
     int min_position;
     int vertice;
@@ -169,7 +162,7 @@ int min_cost(struct graph*g,int *saw,int len,int nbr_garbage, int position, stru
     else{
         for (int i=0;i<nbr_garbage;i++){
             vertice = garbage_to_vertice(i,garbage_position,nbr_garbage);
-            if ((i!=garbage_position) && (!in_tab(i,saw,len))){ 
+            if ((i!=garbage_position) && (unvisited[i])){ 
                 time = g->M[position][vertice];
                 if (time<min){
                     min_position = vertice;
@@ -184,13 +177,16 @@ int min_cost(struct graph*g,int *saw,int len,int nbr_garbage, int position, stru
 void possible_way(struct graph* g, int* path,struct data* d){
     int n=graph__get_n_vertices(g);
     int nbr_garbage = n_garbages_n(n);
-    int saw[nbr_garbage];
+    int unvisited[nbr_garbage];
+    for (int i=0;i<nbr_garbage;i++){
+        unvisited[i]=1;
+    }
     int min;
     int previous=n;
     for (int i=0;i<nbr_garbage;i++){
-        min = min_cost(g,&saw[0],i,nbr_garbage,previous,d);
+        min = min_cost(g,&unvisited[0],i,nbr_garbage,previous,d);
         path[i]=min;
-        saw[i]=min/(nbr_garbage+1);
+        unvisited[min/(nbr_garbage+1)]=0;
         previous = min;
     }
 }
