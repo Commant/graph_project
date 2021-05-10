@@ -17,7 +17,7 @@ void fix_args(int argc, char* argv[])
 	{
 		v_rot=(float)(atof(argv[1]));
 	}
-	if(argc>=2)
+	if(argc>=3)
 	{
 		datas_path=argv[2];
 	}
