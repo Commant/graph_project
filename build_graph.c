@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "build_graph.h"
 
-
+//retourner la liste des coordonnées des déchets 
 struct data* load_data(const char* path)
 {
 	struct data* d=malloc(sizeof(struct data));
@@ -64,6 +64,7 @@ struct data* load_data(const char* path)
 	return d;
 }
 
+//afficher la position initiale du robot et les positions des déchets. 
 void print_data(struct data* d)
 {
 	printf("Robot en position x=%.1f et y=%.1f\n",d->robot.x,d->robot.y);
@@ -82,22 +83,35 @@ void free_data(struct data* d)
 	free(d->garbage);
 	free(d);
 }
+
+
+//afficher le temps passé dans le parcours d'un déchet à un autre
 void print_time(float time)
 {
 	printf("\033[1;35m (%.2f secondes) \033[1;0m",time);
 }
+
+
+//retourner l'indice de la position actuelle d'après le numéro du sommet
 int vertice_to_garbage_dest(int vertice,int n_garbage)
 {
 	return vertice/(n_garbage+1);
 }
+
+//retourner l'indice de la position précédente d'après le numéro du sommet
 int vertice_to_garbage_source(int vertice,int n_garbage)
 {
 	return vertice%(n_garbage+1);
 }
+
+
 static float square(float x)
 {
 	return x*x;
 }
+
+
+//afficher le parcours de robot avec le temps dépensé dasn chaque transition d'une position à une autre ainsi que le temps total du parcours.
 void print_path(struct graph* g,int* path,int n,struct data d)
 {
 	//print_tab(path,n);

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 struct graph* graph__create(int n_vertice)
 {
 	struct graph* g=malloc(sizeof(struct graph));
@@ -16,11 +17,14 @@ struct graph* graph__create(int n_vertice)
 	return g;
 }
 
+//retourner le nombre des sommet du graphe
 int graph__get_n_vertices(struct graph* g)
 {
 	return g->n;
 }
 
+
+//remplir les éléments de la matrice par le poids "distance" si les coordonnées vérifient la fonction f
 void graph__fill_area(struct graph* g, int (*f)(int,int), float distance)
 {
 	for(int i=0;i<g->n;i++)

@@ -6,6 +6,8 @@ static float square(float x)
 {
   return x*x;
 }
+
+//calculer la valeur absolue des nombres flottants
 static float absf(float x)
 {
   if(x>=0.0)
@@ -13,6 +15,8 @@ static float absf(float x)
   return -x;
 }
 
+
+//remplir les poids des aretes dans la matrice d'adjacence
 struct graph* build_graph(struct data* d, float v, float va)
 {
   struct graph* graph = graph__create(1+(1+d->n_garbage)*d->n_garbage);
