@@ -44,7 +44,17 @@ struct graph* build_graph(struct data* d, float v, float va)
                   if(distance2==0 || distance1==0)
                     angle=0.0;
                   else
-                    angle = acosf(absf(((d->garbage[b1].x-d->robot.x)*(d->garbage[b2].x-d->garbage[a2].x)+(d->garbage[b1].y-d->robot.y)*(d->garbage[b2].y-d->garbage[a2].y))/(distance1*distance2)));
+                  {
+                    float ad_angle=0.0;
+                    float scalar_product=((d->garbage[b1].x-d->robot.x)*(d->garbage[b2].x-d->garbage[a2].x)+(d->garbage[b1].y-d->robot.y)*(d->garbage[b2].y-d->garbage[a2].y))/(distance1*distance2);
+                    if(scalar_product<0.0)
+                    {
+                      scalar_product=-scalar_product;
+                      ad_angle=M_PI/2;
+                    }
+                    angle = absf(acosf(scalar_product))+ad_angle;
+                    //printf("angle entre (%d,%d,%d):%f\n",a1,a2,b2,angle);
+                  }
                   //printf("d1:%.2f; d2:%.2f;angle:%.2f\n", angle);
                   graph->M[i][j]=distance2/v + angle/va;
               }
@@ -58,7 +68,17 @@ struct graph* build_graph(struct data* d, float v, float va)
                     if(distance2==0 || distance1==0)
                       angle=0.0;
                     else
-                      angle = acosf(absf(((d->garbage[b1].x-d->garbage[a1].x)*(d->garbage[b2].x-d->garbage[a2].x)+(d->garbage[b1].y-d->garbage[a1].y)*(d->garbage[b2].y-d->garbage[a2].y))/(distance1*distance2)));
+                    {
+                      float ad_angle=0.0;
+                      float scalar_product=((d->garbage[b1].x-d->garbage[a1].x)*(d->garbage[b2].x-d->garbage[a2].x)+(d->garbage[b1].y-d->garbage[a1].y)*(d->garbage[b2].y-d->garbage[a2].y))/(distance1*distance2);
+                      if(scalar_product<0.0)
+                      {
+                        scalar_product=-scalar_product;
+                        ad_angle=M_PI/2;
+                      }
+                      angle = absf(acosf(scalar_product))+ad_angle;
+                      //printf("angle entre (%d,%d,%d):%f\n",a1,a2,b2,angle);
+                    }
                     //printf("(%d->%d):%.2f\n",a1,b1,d->garbage[a1].x,d->garbage[b1].x);
                     //printf("distance:%.2f et %.2f et %.2f\n",distance1,distance2,angle );
                     //printf("angle:%.2f\n", angle);
