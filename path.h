@@ -22,4 +22,11 @@ void order_to_path(int *order,int *path, int len);
 
 void less_easy(struct graph* g, int* path,struct data* d);
 
+int in_tab(int number,int* tab,int len);
+
+int min_cost(struct graph*g,int *saw,int len,int nbr_garbage, int position,struct data* d);
+
+void possible_way(struct graph* g, int* path,struct data* d);
+
+
 #endif

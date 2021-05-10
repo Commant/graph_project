@@ -162,6 +162,7 @@ int min_cost(struct graph*g,int *saw,int len,int nbr_garbage, int position, stru
             time=distance(d->robot.x,d->robot.y,d->garbage[i].x,d->garbage[i].y);
             if (time<min){
                 min_position = garbage_to_vertice(i,nbr_garbage,nbr_garbage);
+                min = time;
             }
         }
     }
@@ -172,6 +173,7 @@ int min_cost(struct graph*g,int *saw,int len,int nbr_garbage, int position, stru
                 time = g->M[position][vertice];
                 if (time<min){
                     min_position = vertice;
+                    min = time;
                 }
             }
         }
