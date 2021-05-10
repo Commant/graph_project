@@ -5,19 +5,24 @@
 #include "path.h"
 #include "create_graph.h"
 
+//calculer le nombre de déchets en donnant le nombre de sommets du graphe
 static int n_garbages_n(int n_vertices_graph)
 {
 	return (int)((sqrt(4*n_vertices_graph-3)-1)/2);
 }
+
 static float square(float x)
 {
     return x*x;
 }
+
+//calculer la distance entre la position (x1, x2) et (y1, y2)
 static float distance(float x1,float y1,float x2,float y2)
 {
     return sqrt(square(x1-x2)+square(y1-y2));
 }
 
+//determiner l'indice de premier déchet dans le parcours
 int first_garbage(struct data* d)
 {
     float dmin=20.0*square(d->garbage[0].x+d->garbage[0].y+d->garbage[1].x+d->garbage[1].y);
@@ -35,6 +40,7 @@ int first_garbage(struct data* d)
     return id;
 }
 
+//la version basique de parcours
 void easy(struct graph* g,int* tab,struct data* d){
     int nbr_garbage = n_garbages_n(g->n);
     //printf("IL Y A %d DECHETS\n", nbr_garbage);
@@ -49,12 +55,13 @@ void easy(struct graph* g,int* tab,struct data* d){
         tab[i]=count;
     }
 }
-
+//retourner le numéro de sommet dans le graphe
 int garbage_to_vertice(int v,int previous, int nbr_garbage){
     return v*(nbr_garbage+1) + previous;
 }
 
-float shorter_path(struct graph* g,int* tab, int len,struct data* d){
+//calculer la durée du parcours
+float time_of_path(struct graph* g,int* tab, int len,struct data* d){
     //int fg=first_garbage(d);
     //printf("first garbage:%d\n",fg);
     float sum=distance(d->robot.x,d->robot.y,d->garbage[tab[0]].x,d->garbage[tab[0]].y);
@@ -69,6 +76,7 @@ float shorter_path(struct graph* g,int* tab, int len,struct data* d){
     return sum;
 }
 
+//vérifier si il y a des doublons dans un tableau
 int twice(int *tab,int len){
     for (int i=0;i<len-1;i++){
         for (int j=i+1;j<len;j++){
@@ -80,19 +88,21 @@ int twice(int *tab,int len){
     return 1;
 }
 
+
 void fill_max(int* tab,int len){
     for(int k=0;k<len;k++){
         tab[len-k-1]=k;
     }
 }
 
+//incrémenter les élément d'un tableau par -1
 void fill_incrementation(int* tab,int len){
     for(int k=0;k<len;k++){
         tab[k]=k;
     }
     tab[len-1]-=1;
 }
-
+//tester si les 2 tableau sont identiques
 int compare(int* t1,int* t2,int len){
     for (int k=0;k<len;k++){
         if(t1[k]!=t2[k]){
@@ -102,6 +112,7 @@ int compare(int* t1,int* t2,int len){
     return 1;
 }
 
+//transformer le tableau du parcours par indices de déchets à un tableau de parcours par numéro de sommets du graphe
 void order_to_path(int *order,int *path, int len){
     int vertice;
     path[0]=garbage_to_vertice(order[0],len,len);
@@ -111,6 +122,8 @@ void order_to_path(int *order,int *path, int len){
     }
 }
 
+
+//déterminer tous les chemins possibles pour le robot
 void all_possible_paths(struct graph* g, int* path,struct data* d){
     int n=graph__get_n_vertices(g);
     int nbr_garbage = n_garbages_n(n);
@@ -126,7 +139,7 @@ void all_possible_paths(struct graph* g, int* path,struct data* d){
             incrementation[k]+=1;
             if (incrementation[k]<nbr_garbage){
                 if (twice(incrementation,nbr_garbage)){
-                    time = shorter_path(g,incrementation,nbr_garbage,d);
+                    time = time_of_path(g,incrementation,nbr_garbage,d);
                     if (time < min){
                         min = time;
                         order_to_path(incrementation,path,nbr_garbage);
@@ -143,7 +156,7 @@ void all_possible_paths(struct graph* g, int* path,struct data* d){
 }
 
 
-
+//trouver le chemin le plus rapide pour le robot
 int min_cost(struct graph*g,int *unvisited,int len,int nbr_garbage, int position, struct data* d){
     float min = 1000000;
     int min_position;
@@ -174,6 +187,7 @@ int min_cost(struct graph*g,int *unvisited,int len,int nbr_garbage, int position
     return min_position;
 }
 
+// determiner le déchets le plus proche de la position actuelle du robot
 void closest_garbages(struct graph* g, int* path,struct data* d){
     int n=graph__get_n_vertices(g);
     int nbr_garbage = n_garbages_n(n);

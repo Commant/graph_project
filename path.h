@@ -8,7 +8,7 @@ void easy(struct graph* g, int* tab,struct data* d);
 
 int garbage_to_vertice(int v,int previous, int nbr_garbage);
 
-float shorter_path(struct graph* g,int* tab, int len,struct data* d);
+float time_of_path(struct graph* g,int* tab, int len,struct data* d);
 
 int twice(int *tab,int len);
 

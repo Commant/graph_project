@@ -24,39 +24,46 @@ int graph__get_n_vertices(struct graph* g)
 }
 
 
-//remplir les éléments de la matrice par le poids "distance" si les coordonnées vérifient la fonction f
-void graph__fill_area(struct graph* g, int (*f)(int,int), float distance)
+//remplir les éléments de la matrice par le poids "weight" si les coordonnées vérifient la fonction f
+void graph__fill_area(struct graph* g, int (*f)(int,int), float weight)
 {
 	for(int i=0;i<g->n;i++)
 	{
 		for(int j=0;j<g->n;j++)
 		{
 			if(f(i,j)==1)
-				g->M[i][j]=distance;
+				g->M[i][j]=weight;
 		}
 	}
 }
+
+///// fonctions test //////
 static int always_true(int i,int j)
 {
 	return 1;
 }
 
-void graph__fill(struct graph* g, float distance)
+
+void graph__fill(struct graph* g, float weight)
 {
-	graph__fill_area(g,always_true,distance);
+	graph__fill_area(g,always_true,weight);
+}
+/////////////////////////////////////
+
+//remplir l'élément (i,j) de la matrice d'adjacence par le poids "time"
+void graph__set_weight(struct graph* g, int i, int j, float weight)
+{
+	g->M[i][j]=weight;
 }
 
-void graph__set_weight(struct graph* g, int i, int j, float distance)
-{
-	g->M[i][j]=distance;
-}
-
+//casser la liaison entre les 2 sommets i et j
 void graph__untie(struct graph* g, int i, int j)
 {
 	graph__set_weight(g,i,j,NO_LINK);
 	graph__set_weight(g,j,i,NO_LINK);
 }
 
+//retourner le poids de l'élément (i,j) de la matrice d'adjacence
 float graph__get_weight(struct graph* g, int i, int j)
 {
 	return g->M[i][j];
@@ -70,6 +77,7 @@ int graph__is_linked(struct graph* g, int i, int j)
 	return 1;
 }
 
+//liberer l'espace aloué au graphe
 void graph__free(struct graph* g)
 {
 	for(int i=0;i<g->n;i++)
@@ -80,6 +88,7 @@ void graph__free(struct graph* g)
 	free(g);
 }
 
+
 static int diagonal(int i,int j)
 {
 	if(i==j)
@@ -87,20 +96,21 @@ static int diagonal(int i,int j)
 	return 0;
 }
 
-void graph__fill_diagonal(struct graph* g, float distance)
+//remplir la diagonale de la matrice d'adjacence par le poids "weight"
+void graph__fill_diagonal(struct graph* g, float weight)
 {
-	graph__fill_area(g,diagonal,distance);
+	graph__fill_area(g,diagonal,weight);
 }
-
-void graph__fill_vertice(struct graph* g, int v, float distance)
+//remplir la ième colone de la matrice d'ajacence par "weight"
+void graph__fill_vertice(struct graph* g, int v, float weight)
 {
 	for(int i=0;i<g->n;i++)
 	{
-		graph__set_weight(g,v,i,distance);
+		graph__set_weight(g,v,i,weight);
 	}
 }
 
-
+//afficher le graphe (s'il est de taille petite)
 void graph__print(struct graph* g)
 {
 	if(g->n>26)
