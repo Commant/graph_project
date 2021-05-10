@@ -28,7 +28,7 @@ int first_garbage(struct data* d)
         dis=distance(d->robot.x,d->robot.y,d->garbage[k].x,d->garbage[k].y);
         if(dis<dmin)
         {
-            dis=dmin;
+            dmin=dis;
             id=k;
         }
     }
@@ -55,9 +55,12 @@ int garbage_to_vertice(int v,int previous, int nbr_garbage){
 }
 
 float shorter_path(struct graph* g,int* tab, int len,struct data* d){
-    float sum=distance(d->robot.x,d->robot.y,d->garbage[first_garbage(d)].x,d->garbage[first_garbage(d)].y);;
+    //int fg=first_garbage(d);
+    //printf("first garbage:%d\n",fg);
+    float sum=distance(d->robot.x,d->robot.y,d->garbage[tab[0]].x,d->garbage[tab[0]].y);;
     int vertice;
     int previous_vertice=garbage_to_vertice(tab[0],len,len);
+    //printf("%d:%.2f | ", previous_vertice,sum);
     for (int i=1;i<len;i++){
         vertice=garbage_to_vertice(tab[i],tab[i-1],len);
         sum += g->M[previous_vertice][vertice];
@@ -136,4 +139,5 @@ void less_easy(struct graph* g, int* path,struct data* d){
             }
         }
     }
+    //printf("PREMIER SOMMET:%d\n",path[0] );
 }
