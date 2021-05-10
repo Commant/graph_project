@@ -28,19 +28,37 @@ void fix_args(int argc, char* argv[])
 	}
 }
 
+#define NBRE_GARBAGE_MAX_ALL_POSSIBLE_PATHS 8
+
 int main(int argc, char* argv[])
 {
+	printf("\n\033[1;33m");
+	printf("======================================\n");
+	printf("========== LE ROBOT RAMASSEUR=========\n");
+	printf("======================================\033[1;0m\n");
 	fix_args(argc,argv);
 	struct data* d=load_data(datas_path);
 	//printf("\n");print_data(d);		
 	struct graph* g=build_graph(d,v,v_rot);
 	//graph__print(g);
 	//printf("Angle inital négligé\n");
-	printf("\n\033[1;32mVitesse de rotation du robot:\033[1;31m %.2f\033[1;0m\n",v_rot);
+	printf("\n\033[1;32m-Vitesse de rotation du robot:\033[1;31m %.2f\033[1;0m\n",v_rot);
+	printf("\033[1;32m-Nombre de déchets:\033[1;31m %d\033[1;0m\n",d->n_garbage);
 	int path[d->n_garbage*(d->n_garbage+1)+1];
 
-	//less_easy(g,path,d);
-	possible_way(g,path,d);
+	if(d->n_garbage<=NBRE_GARBAGE_MAX_ALL_POSSIBLE_PATHS)
+	{
+		printf("\033[1;32m-Nombre de déchets inférieur à \033[1;31m%d,\033[1;32m algorithme utilisé:\033[1;0m\n",NBRE_GARBAGE_MAX_ALL_POSSIBLE_PATHS+1);
+		printf("\033[1;34m-Calcul de toutes les possibilitées\033[1;0m\n");
+		all_possible_paths(g,path,d);
+	}
+	else
+	{
+		printf("\033[1;32m-Nombre de déchets supérieur à \033[1;31m%d,\033[1;32m algorithme utilisé:\033[1;0m\n",NBRE_GARBAGE_MAX_ALL_POSSIBLE_PATHS);
+		printf("\033[1;35m-Plus proche voisin\033[1;0m\n");
+		closest_garbages(g,path,d);
+	}
+	
 
 
 	print_path(g,path,d->n_garbage,*d);
@@ -64,6 +82,8 @@ int main(int argc, char* argv[])
 	int e =twice(test2,3);
 	printf("%d-%d\n",d,e);
 	*/
-	
+	printf("\033[1;33m");
+	printf("======================================\n");
+	printf("======================================\033[1;0m\n\n");
 	return 0;
 }

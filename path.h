@@ -20,11 +20,11 @@ int compare(int* t1,int* t2,int len);
 
 void order_to_path(int *order,int *path, int len);
 
-void less_easy(struct graph* g, int* path,struct data* d);
+void all_possible_paths(struct graph* g, int* path,struct data* d);
 
-int min_cost(struct graph*g,int *saw,int len,int nbr_garbage, int position,struct data* d);
+int min_cost(struct graph*g,int *univisited,int len,int nbr_garbage, int position,struct data* d);
 
-void possible_way(struct graph* g, int* path,struct data* d);
+void closest_garbages(struct graph* g, int* path,struct data* d);
 
 
 #endif
